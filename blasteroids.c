@@ -13,14 +13,21 @@ void error(const char *msg)
     exit(1);
 }
 
+void debug(const char *msg)
+{
+    printf("%s\n", msg);
+}
+
 void init()
 {
     if (!al_init())
-	error("Failed to initialize allegro");
+    	error("Failed to initialize allegro");
     if (!al_init_image_addon())
-	error("Failed to initialize the image addon");
+    	error("Failed to initialize the image addon");
     if (!al_init_primitives_addon())
-	error("Failed to initialize the primitives addon");
+    	error("Failed to initialize the primitives addon");
+    if (!al_install_keyboard())
+        error("Failed to install a keyboard driver");
     al_init_font_addon();
 }
 
@@ -34,12 +41,34 @@ int main(int argc, char **argv)
 
     ALLEGRO_DISPLAY *display = al_create_display(adm.width, adm.height);
     if (!display)
-	error("Failed to create window");
+    	error("Failed to create display");
+
+    ALLEGRO_EVENT_QUEUE *eventQueue = al_create_event_queue();
+    if (!eventQueue) {
+        al_destroy_display(display);
+        error("Failed to create event queue");
+    }
+
+    al_register_event_source(eventQueue, al_get_keyboard_event_source());
 
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
-    al_rest(10.0);
+
+    while (1) {
+        ALLEGRO_EVENT event;
+        bool hasEvent = al_get_next_event(eventQueue, &event);
+        if (hasEvent
+                && event.type == ALLEGRO_EVENT_KEY_DOWN
+                && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+            break;
+        }
+
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_flip_display();
+    }
+
     al_destroy_display(display);
+    al_destroy_event_queue(eventQueue);
 
     return 0;
 }
