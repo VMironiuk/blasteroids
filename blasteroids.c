@@ -1,3 +1,5 @@
+#include "spaceship.h"
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
@@ -31,7 +33,7 @@ void init()
     al_init_font_addon();
 }
 
-int main(int argc, char **argv)
+int main(/*int argc, char **argv*/)
 {
     init();
 
@@ -55,11 +57,11 @@ int main(int argc, char **argv)
     al_flip_display();
 
     while (1) {
-        ALLEGRO_EVENT event;
-        bool hasEvent = al_get_next_event(eventQueue, &event);
+        ALLEGRO_EVENT closeEvent;
+        bool hasEvent = al_get_next_event(eventQueue, &closeEvent);
         if (hasEvent
-                && event.type == ALLEGRO_EVENT_KEY_DOWN
-                && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+                && closeEvent.type == ALLEGRO_EVENT_KEY_DOWN
+                && closeEvent.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
             break;
         }
 

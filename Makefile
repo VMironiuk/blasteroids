@@ -9,7 +9,8 @@ LIBS = -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primiti
 
 # Files
 
-OBJECTS = blasteroids.o
+OBJECTS = blasteroids.o \
+		spaceship.o
 TARGET = blasteroids
 
 # Build rules
@@ -22,8 +23,10 @@ $(TARGET): $(OBJECTS)
 blasteroids.o: blasteroids.c
 	$(CC) -c $(CFLAGS) $(INCPATH) -o blasteroids.o blasteroids.c
 
+spaceship.o: spaceship.c spaceship.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o spaceship.o spaceship.c
+
 clean:
 	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) $(TARGET)
 	-$(DEL_FILE) *~
-
