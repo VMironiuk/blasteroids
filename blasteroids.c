@@ -56,21 +56,45 @@ int main(/*int argc, char **argv*/)
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
 
+    Spaceship *spaceship = createSpaceship(&adm);
+
     while (1) {
-        ALLEGRO_EVENT closeEvent;
-        bool hasEvent = al_get_next_event(eventQueue, &closeEvent);
-        if (hasEvent
-                && closeEvent.type == ALLEGRO_EVENT_KEY_DOWN
-                && closeEvent.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-            break;
-        }
+        ALLEGRO_EVENT event;
+        bool hasEvent = al_get_next_event(eventQueue, &event);
+	if (hasEvent && event.type == ALLEGRO_EVENT_KEY_CHAR) {
+	    if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+		break;
+	    }
+	    if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
+		if (spaceship->y < 0)
+		    spaceship->y = adm.height;
+		spaceship->y -= 4.0;
+	    }
+	    if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+		if (spaceship->y > adm.height)
+		    spaceship->y = 0;
+		spaceship->y += 4.0;
+	    }
+	    if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+		if (spaceship->x < 0)
+		    spaceship->x = adm.width;
+		spaceship->x -= 4.0;
+	    }
+	    if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+		if (spaceship->x > adm.width)
+		    spaceship->x = 0;
+		spaceship->x += 4.0;
+	    }
+	}
 
         al_clear_to_color(al_map_rgb(0, 0, 0));
+	drawSpaceship(spaceship);
         al_flip_display();
     }
 
     al_destroy_display(display);
     al_destroy_event_queue(eventQueue);
+    destroySpaceship(spaceship);
 
     return 0;
 }
