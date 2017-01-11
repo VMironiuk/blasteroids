@@ -5,12 +5,13 @@ LINK = gcc
 CFLAGS = -pipe -g -Wall -W -fPIC
 DEL_FILE = rm -f
 INCPATH = -I.
-LIBS = -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primitives
+LIBS = -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primitives -lm
 
 # Files
 
 OBJECTS = blasteroids.o \
-		spaceship.o
+	spaceship.o \
+	global.o
 TARGET = blasteroids
 
 # Build rules
@@ -20,11 +21,14 @@ $(TARGET): $(OBJECTS)
 
 # Compile
 
-blasteroids.o: blasteroids.c
+blasteroids.o: blasteroids.c global.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o blasteroids.o blasteroids.c
 
-spaceship.o: spaceship.c spaceship.h
+spaceship.o: spaceship.c spaceship.h global.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o spaceship.o spaceship.c
+
+global.o: global.c global.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o global.o global.c
 
 clean:
 	-$(DEL_FILE) $(OBJECTS)

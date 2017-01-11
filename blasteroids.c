@@ -1,24 +1,10 @@
 #include "spaceship.h"
+#include "global.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdlib.h>
-
-void error(const char *msg)
-{
-    fprintf(stderr, "%s: %s\n", msg, strerror(errno));
-    exit(1);
-}
-
-void debug(const char *msg)
-{
-    printf("%s\n", msg);
-}
 
 void init()
 {
@@ -56,45 +42,42 @@ int main(/*int argc, char **argv*/)
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
 
-    Spaceship *spaceship = createSpaceship(&adm);
+    Spaceship *spaceship = createSpaceship();
 
-    while (1) {
-        ALLEGRO_EVENT event;
-        bool hasEvent = al_get_next_event(eventQueue, &event);
-	if (hasEvent && event.type == ALLEGRO_EVENT_KEY_CHAR) {
-	    if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+    bool doExit = false;
+    while (!doExit) {
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+	drawSpaceship(spaceship);
+	al_flip_display();
+
+	ALLEGRO_EVENT event;
+	al_wait_for_event(eventQueue, &event);
+	if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
+	    switch (event.keyboard.keycode) {
+	    case ALLEGRO_KEY_ESCAPE:
+		doExit = true;
+		break;
+	    case ALLEGRO_KEY_UP:
+		moveSpaceshipForward(spaceship);
+		break;
+	    case ALLEGRO_KEY_DOWN:
+		moveSpaceshipBackward(spaceship);
+		break;
+	    case ALLEGRO_KEY_LEFT:
+		turnSpaceshipLeft(spaceship);
+		break;
+	    case ALLEGRO_KEY_RIGHT:
+		turnSpaceshipRight(spaceship);
+		break;
+	    default:
 		break;
 	    }
-	    if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
-		if (spaceship->y < 0)
-		    spaceship->y = adm.height;
-		spaceship->y -= 4.0;
-	    }
-	    if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
-		if (spaceship->y > adm.height)
-		    spaceship->y = 0;
-		spaceship->y += 4.0;
-	    }
-	    if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
-		if (spaceship->x < 0)
-		    spaceship->x = adm.width;
-		spaceship->x -= 4.0;
-	    }
-	    if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
-		if (spaceship->x > adm.width)
-		    spaceship->x = 0;
-		spaceship->x += 4.0;
-	    }
 	}
-
-        al_clear_to_color(al_map_rgb(0, 0, 0));
-	drawSpaceship(spaceship);
-        al_flip_display();
     }
 
+    destroySpaceship(spaceship);
     al_destroy_display(display);
     al_destroy_event_queue(eventQueue);
-    destroySpaceship(spaceship);
 
     return 0;
 }

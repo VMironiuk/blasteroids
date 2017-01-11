@@ -9,11 +9,16 @@ struct Spaceship
 {
     float x, y;
     float heading;
+    float speed;
     ALLEGRO_COLOR color;
 };
 
-Spaceship *createSpaceship(ALLEGRO_DISPLAY_MODE *adm);
+Spaceship *createSpaceship();
 void destroySpaceship(Spaceship *spaceship);
 void drawSpaceship(Spaceship *spaceship);
+void moveSpaceshipForward(Spaceship *spaceship);
+void moveSpaceshipBackward(Spaceship *spaceship);
+void turnSpaceshipLeft(Spaceship *spaceship);
+void turnSpaceshipRight(Spaceship *spaceship);
 
 #endif
