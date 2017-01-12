@@ -27,7 +27,6 @@ void moveChanged(Spaceship *spaceship)
     if (spaceship->direction != spaceship->heading)
 	spaceship->speed = 0.0;
     spaceship->direction = spaceship->heading;
-    spaceship->speed += (actions[MoveForward] ? 0.25: -0.25);
 }
 
 Spaceship *createSpaceship()
@@ -67,14 +66,22 @@ void updateSpaceship(Spaceship *spaceship)
 {
     handleBoundaries(spaceship);
 
-    if (actions[MoveForward])
+    if (actions[MoveForward]) {
 	moveChanged(spaceship);
-    else if (actions[MoveBackward])
+	if (spaceship->speed < 15.0)
+	    spaceship->speed += 0.25;
+    }
+    else if (actions[MoveBackward]) {
 	moveChanged(spaceship);
-    else if (actions[TurnLeft])
+	if (spaceship->speed > -15.0)
+	    spaceship->speed -= 0.25;
+    }
+    else if (actions[TurnLeft]) {
 	spaceship->heading += degreesToRadians(5.0);
-    else if (actions[TurnRight])
+    }
+    else if (actions[TurnRight]) {
 	spaceship->heading -= degreesToRadians(5.0);
+    }
 
     spaceship->x += cos(spaceship->direction) * spaceship->speed;
     spaceship->y -= sin(spaceship->direction) * spaceship->speed;
