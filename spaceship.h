@@ -9,6 +9,7 @@ struct Spaceship
 {
     float x, y;
     float heading;
+    float direction;
     float speed;
     ALLEGRO_COLOR color;
 };
@@ -16,9 +17,14 @@ struct Spaceship
 Spaceship *createSpaceship();
 void destroySpaceship(Spaceship *spaceship);
 void drawSpaceship(Spaceship *spaceship);
-void moveSpaceshipForward(Spaceship *spaceship);
-void moveSpaceshipBackward(Spaceship *spaceship);
-void turnSpaceshipLeft(Spaceship *spaceship);
-void turnSpaceshipRight(Spaceship *spaceship);
+void updateSpaceship(Spaceship *spaceship);
+void moveSpaceshipForwardOn();
+void moveSpaceshipBackwardOn();
+void turnSpaceshipLeftOn();
+void turnSpaceshipRightOn();
+void moveSpaceshipForwardOff();
+void moveSpaceshipBackwardOff();
+void turnSpaceshipLeftOff();
+void turnSpaceshipRightOff();
 
 #endif
