@@ -1,11 +1,14 @@
 #include "spaceship.h"
 #include "global.h"
+#include "blast.h"
+#include "blastqueue.h"
 
 #include <allegro5/allegro_primitives.h>
 #include <math.h>
+#include <assert.h>
 
-enum {MoveForward, MoveBackward, TurnLeft, TurnRight};
-bool actions[4];
+enum {MoveForward, MoveBackward, TurnLeft, TurnRight, Shoot};
+bool actions[5];
 
 void handleBoundaries(Spaceship *spaceship)
 {
@@ -24,9 +27,9 @@ void handleBoundaries(Spaceship *spaceship)
 
 void moveChanged(Spaceship *spaceship)
 {
-    if (spaceship->direction != spaceship->heading)
+    if (spaceship->movingDirection != spaceship->heading)
 	spaceship->speed = 0.0;
-    spaceship->direction = spaceship->heading;
+    spaceship->movingDirection = spaceship->heading;
 }
 
 Spaceship *createSpaceship()
@@ -34,11 +37,14 @@ Spaceship *createSpaceship()
     ALLEGRO_DISPLAY_MODE adm;
     al_get_display_mode(al_get_num_display_modes() - 1, &adm);
 
-    Spaceship *spaceship = (Spaceship *)malloc(sizeof(Spaceship));
+    Spaceship *spaceship = (Spaceship *)malloc(sizeof *spaceship);
+
+    assert(spaceship);
+
     spaceship->x = adm.width / 2;
     spaceship->y = adm.height / 2;
     spaceship->heading = degreesToRadians(90.0);
-    spaceship->direction = spaceship->heading;
+    spaceship->movingDirection = spaceship->heading;
     spaceship->speed = 0.25;
     spaceship->color = al_map_rgb(0, 255, 0);
     return spaceship;
@@ -71,20 +77,27 @@ void updateSpaceship(Spaceship *spaceship)
 	if (spaceship->speed < 15.0)
 	    spaceship->speed += 0.25;
     }
-    else if (actions[MoveBackward]) {
+
+    if (actions[MoveBackward]) {
 	moveChanged(spaceship);
 	if (spaceship->speed > -15.0)
 	    spaceship->speed -= 0.25;
     }
-    else if (actions[TurnLeft]) {
-	spaceship->heading += degreesToRadians(5.0);
-    }
-    else if (actions[TurnRight]) {
-	spaceship->heading -= degreesToRadians(5.0);
-    }
 
-    spaceship->x += cos(spaceship->direction) * spaceship->speed;
-    spaceship->y -= sin(spaceship->direction) * spaceship->speed;
+    if (actions[TurnLeft])
+	spaceship->heading += degreesToRadians(5.0);
+
+    if (actions[TurnRight])
+	spaceship->heading -= degreesToRadians(5.0);
+
+    spaceship->x += cos(spaceship->movingDirection) * spaceship->speed;
+    spaceship->y -= sin(spaceship->movingDirection) * spaceship->speed;
+}
+
+void updateSpaceshipsBlasts(Spaceship *spaceship, BlastQueue *queue)
+{
+    if (actions[Shoot])
+	pushBlast(queue, createBlast(spaceship));
 }
 
 void moveSpaceshipForwardOn()
@@ -126,3 +139,14 @@ void turnSpaceshipRightOff()
 {
     actions[TurnRight] = false;
 }
+
+void shootSpaceshipOn()
+{
+    actions[Shoot] = true;
+}
+
+void shootSpaceshipOff()
+{
+    actions[Shoot] = false;
+}
+

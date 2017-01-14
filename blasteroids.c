@@ -1,5 +1,7 @@
 #include "spaceship.h"
 #include "global.h"
+#include "blast.h"
+#include "blastqueue.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -51,7 +53,9 @@ int main(/*int argc, char **argv*/)
     al_flip_display();
     al_start_timer(timer);
 
-    Spaceship *spaceship = createSpaceship();
+    Spaceship *sulaco = createSpaceship();
+    BlastQueue *blastQueue = createBlastQueue();
+
     bool doExit = false;
     while (!doExit) {
 	ALLEGRO_EVENT event;
@@ -59,8 +63,11 @@ int main(/*int argc, char **argv*/)
 
 	if (event.type == ALLEGRO_EVENT_TIMER) {
 	    al_clear_to_color(al_map_rgb(0, 0, 0));
-	    updateSpaceship(spaceship);
-	    drawSpaceship(spaceship);
+	    updateSpaceship(sulaco);
+	    updateSpaceshipsBlasts(sulaco, blastQueue);
+	    drawSpaceship(sulaco);
+	    updateBlastQueue(blastQueue);
+	    drawBlastQueue(blastQueue);
 	    al_flip_display();
 	}
 
@@ -81,6 +88,9 @@ int main(/*int argc, char **argv*/)
 	    case ALLEGRO_KEY_RIGHT:
 		turnSpaceshipRightOn();
 		break;
+	    case ALLEGRO_KEY_SPACE:
+		shootSpaceshipOn();
+		break;
 	    default:
 		break;
 	    }
@@ -100,13 +110,17 @@ int main(/*int argc, char **argv*/)
 	    case ALLEGRO_KEY_RIGHT:
 		turnSpaceshipRightOff();
 		break;
+	    case ALLEGRO_KEY_SPACE:
+		shootSpaceshipOff();
+		break;
 	    default:
 		break;
 	    }
 	}
     }
 
-    destroySpaceship(spaceship);
+    destroySpaceship(sulaco);
+    destroyBlastQueue(blastQueue);
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(eventQueue);
