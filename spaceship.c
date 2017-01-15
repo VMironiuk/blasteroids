@@ -94,7 +94,7 @@ void updateSpaceship(Spaceship *spaceship)
     spaceship->y -= sin(spaceship->movingDirection) * spaceship->speed;
 }
 
-void updateSpaceshipsBlasts(Spaceship *spaceship, BlastQueue *queue)
+void updateSpaceshipsBlaster(Spaceship *spaceship, BlastQueue *queue)
 {
     if (actions[Shoot])
 	pushBlast(queue, createBlast(spaceship));

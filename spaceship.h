@@ -20,7 +20,7 @@ Spaceship *createSpaceship();
 void destroySpaceship(Spaceship *spaceship);
 void drawSpaceship(Spaceship *spaceship);
 void updateSpaceship(Spaceship *spaceship);
-void updateSpaceshipsBlasts(Spaceship *spaceship, struct BlastQueue *queue);
+void updateSpaceshipsBlaster(Spaceship *spaceship, struct BlastQueue *queue);
 void moveSpaceshipForwardOn();
 void moveSpaceshipBackwardOn();
 void turnSpaceshipLeftOn();

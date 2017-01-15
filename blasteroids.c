@@ -64,7 +64,7 @@ int main(/*int argc, char **argv*/)
 	if (event.type == ALLEGRO_EVENT_TIMER) {
 	    al_clear_to_color(al_map_rgb(0, 0, 0));
 	    updateSpaceship(sulaco);
-	    updateSpaceshipsBlasts(sulaco, blastQueue);
+	    updateSpaceshipsBlaster(sulaco, blastQueue);
 	    drawSpaceship(sulaco);
 	    updateBlastQueue(blastQueue);
 	    drawBlastQueue(blastQueue);
@@ -119,11 +119,11 @@ int main(/*int argc, char **argv*/)
 	}
     }
 
-    destroySpaceship(sulaco);
-    destroyBlastQueue(blastQueue);
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(eventQueue);
+    destroySpaceship(sulaco);
+    destroyBlastQueue(blastQueue);
 
     return 0;
 }
