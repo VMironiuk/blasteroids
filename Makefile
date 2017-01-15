@@ -13,7 +13,8 @@ OBJECTS = blasteroids.o \
 	spaceship.o \
 	global.o \
 	blast.o \
-	blastqueue.o
+	blastqueue.o \
+	asteroid.o
 TARGET = blasteroids
 
 # Build rules
@@ -37,6 +38,9 @@ blast.o: blast.c blast.h spaceship.h
 
 blastqueue.o: blastqueue.c blastqueue.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o blastqueue.o blastqueue.c
+
+asteroid.o: asteroid.c asteroid.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o asteroid.o asteroid.c
 
 clean:
 	-$(DEL_FILE) $(OBJECTS)

@@ -9,7 +9,8 @@
 
 struct Blast
 {
-    float x, y;
+    float x;
+    float y;
     float heading;
     float speed;
     ALLEGRO_COLOR color;

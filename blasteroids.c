@@ -41,8 +41,8 @@ int main(/*int argc, char **argv*/)
 
     ALLEGRO_EVENT_QUEUE *eventQueue = al_create_event_queue();
     if (!eventQueue) {
+        al_destroy_timer(timer);
         al_destroy_display(display);
-	al_destroy_timer(timer);
         error("Failed to create event queue");
     }
 

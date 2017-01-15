@@ -9,7 +9,8 @@ typedef struct Spaceship Spaceship;
 
 struct Spaceship
 {
-    float x, y;
+    float x;
+    float y;
     float heading;
     float movingDirection;
     float speed;
