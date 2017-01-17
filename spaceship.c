@@ -10,7 +10,7 @@
 enum {MoveForward, MoveBackward, TurnLeft, TurnRight, Shoot};
 bool actions[5];
 
-void handleBoundaries(Spaceship *spaceship)
+void limitBoundariesForSpaceship(Spaceship *spaceship)
 {
     ALLEGRO_DISPLAY_MODE adm;
     al_get_display_mode(al_get_num_display_modes() - 1, &adm);
@@ -70,7 +70,7 @@ void drawSpaceship(Spaceship *spaceship)
 
 void updateSpaceship(Spaceship *spaceship)
 {
-    handleBoundaries(spaceship);
+    limitBoundariesForSpaceship(spaceship);
 
     if (actions[MoveForward]) {
 	moveChanged(spaceship);
