@@ -4,6 +4,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <math.h>
 #include <assert.h>
+#include <stdlib.h>
 
 struct Asteroid
 {
@@ -32,14 +33,25 @@ void limitBoundariesForAsteroid(Asteroid *asteroid)
         asteroid->x = 0;
 }
 
-
 Asteroid *createAsteroid()
 {
     Asteroid *asteroid = (Asteroid *)malloc(sizeof *asteroid);
 
     assert(asteroid);
 
-    // TODO: init asteroid's fields
+    srand((unsigned)time(0));
+    
+    ALLEGRO_DISPLAY_MODE adm;
+    al_get_display_mode(al_get_num_display_modes() - 1, &adm);
+
+    asteroid->x = rand() % adm.width;
+    asteroid->y = rand() % adm.height;
+    asteroid->heading = degreesToRadians(rand() % 360);
+    asteroid->twist = degreesToRadians(rand() % 360);
+    asteroid->speed = rand() % 8 + 2;
+    asteroid->rotateVelocity = degreesToRadians(rand() % 10);
+    asteroid->scale = 1.0;
+    asteroid->color = al_map_rgb(255, 255, 255);
     return asteroid;
 }
 
@@ -71,5 +83,9 @@ void drawAsteroid(Asteroid *asteroid)
 
 void updateAsteroid(Asteroid *asteroid)
 {
-    // TODO: add implementation
+    limitBoundariesForAsteroid(asteroid);
+
+    asteroid->twist += asteroid->rotateVelocity;
+    asteroid->x += cos(asteroid->heading) * asteroid->speed;
+    asteroid->y += sin(asteroid->heading) * asteroid->speed;
 }

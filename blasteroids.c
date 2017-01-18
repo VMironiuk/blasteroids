@@ -2,6 +2,7 @@
 #include "global.h"
 #include "blast.h"
 #include "blastqueue.h"
+#include "asteroid.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -55,6 +56,8 @@ int main(/*int argc, char **argv*/)
 
     Spaceship *sulaco = createSpaceship();
     BlastQueue *blastQueue = createBlastQueue();
+    // TODO: remove this asteroid later
+    Asteroid *asteroid = createAsteroid();
 
     bool doExit = false;
     while (!doExit) {
@@ -63,11 +66,17 @@ int main(/*int argc, char **argv*/)
 
 	if (event.type == ALLEGRO_EVENT_TIMER) {
 	    al_clear_to_color(al_map_rgb(0, 0, 0));
+
 	    updateSpaceship(sulaco);
 	    updateSpaceshipsBlaster(sulaco, blastQueue);
 	    drawSpaceship(sulaco);
+
 	    updateBlastQueue(blastQueue);
 	    drawBlastQueue(blastQueue);
+
+            updateAsteroid(asteroid);
+            drawAsteroid(asteroid);
+
 	    al_flip_display();
 	}
 
@@ -124,6 +133,8 @@ int main(/*int argc, char **argv*/)
     al_destroy_event_queue(eventQueue);
     destroySpaceship(sulaco);
     destroyBlastQueue(blastQueue);
+    // TODO: remove later
+    destroyAsteroid(asteroid);
 
     return 0;
 }
