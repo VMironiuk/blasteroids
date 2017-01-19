@@ -7,6 +7,16 @@
 #include <math.h>
 #include <assert.h>
 
+struct Spaceship
+{
+    float x;
+    float y;
+    float heading;
+    float movingDirection;
+    float speed;
+    ALLEGRO_COLOR color;
+};
+
 enum {MoveForward, MoveBackward, TurnLeft, TurnRight, Shoot};
 bool actions[5];
 
@@ -98,6 +108,26 @@ void updateSpaceshipsBlaster(Spaceship *spaceship, BlastQueue *queue)
 {
     if (actions[Shoot])
 	pushBlast(queue, createBlast(spaceship));
+}
+
+float spaceshipsX(const Spaceship *spaceship)
+{
+    return spaceship->x;
+}
+
+float spaceshipsY(const Spaceship *spaceship)
+{
+    return spaceship->y;
+}
+
+float spaceshipsHeading(const Spaceship *spaceship)
+{
+    return spaceship->heading;
+}
+
+ALLEGRO_COLOR spaceshipsColor(const Spaceship *spaceship)
+{
+    return spaceship->color;
 }
 
 void moveSpaceshipForwardOn()

@@ -42,11 +42,11 @@ Blast *createBlast(const Spaceship *spaceship)
 
     assert(blast);
 
-    blast->x = spaceship->x;
-    blast->y = spaceship->y;
-    blast->heading = spaceship->heading;
+    blast->x = spaceshipsX(spaceship);
+    blast->y = spaceshipsY(spaceship);
+    blast->heading = spaceshipsHeading(spaceship);
     blast->speed = 20;
-    blast->color = spaceship->color;
+    blast->color = spaceshipsColor(spaceship);
     return blast;
 }
 

@@ -3,6 +3,7 @@
 #include "blast.h"
 #include "blastqueue.h"
 #include "asteroid.h"
+#include "collisions.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -59,6 +60,8 @@ int main(/*int argc, char **argv*/)
     // TODO: remove this asteroid later
     Asteroid *asteroid = createAsteroid();
 
+    int score = 0;
+    int lives = 3;
     bool doExit = false;
     while (!doExit) {
 	ALLEGRO_EVENT event;
@@ -66,6 +69,9 @@ int main(/*int argc, char **argv*/)
 
 	if (event.type == ALLEGRO_EVENT_TIMER) {
 	    al_clear_to_color(al_map_rgb(0, 0, 0));
+
+            score += checkBlastAsteroidCollision(blastQueue, asteroid);
+            lives -= checkSpaceshipAsteroidCollision(sulaco, asteroid);
 
 	    updateSpaceship(sulaco);
 	    updateSpaceshipsBlaster(sulaco, blastQueue);
