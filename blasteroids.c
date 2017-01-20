@@ -58,7 +58,7 @@ int main(/*int argc, char **argv*/)
     Spaceship *sulaco = createSpaceship();
     BlastQueue *blastQueue = createBlastQueue();
     // TODO: remove this asteroid later
-    Asteroid *asteroid = createAsteroid();
+    Asteroid *asteroid = createAsteroid(1.0);
 
     int score = 0;
     int lives = 3;

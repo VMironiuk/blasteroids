@@ -33,7 +33,7 @@ void limitBoundariesForAsteroid(Asteroid *asteroid)
         asteroid->x = 0;
 }
 
-Asteroid *createAsteroid()
+Asteroid *createAsteroid(float scale)
 {
     Asteroid *asteroid = (Asteroid *)malloc(sizeof *asteroid);
 
@@ -48,9 +48,9 @@ Asteroid *createAsteroid()
     asteroid->y = rand() % adm.height;
     asteroid->heading = degreesToRadians(rand() % 360);
     asteroid->twist = degreesToRadians(rand() % 360);
-    asteroid->speed = rand() % 8 + 2;
-    asteroid->rotateVelocity = degreesToRadians(rand() % 10);
-    asteroid->scale = 1.0;
+    asteroid->speed = rand() % 5 + 2;
+    asteroid->rotateVelocity = degreesToRadians(rand() % 5);
+    asteroid->scale = scale;
     asteroid->color = al_map_rgb(255, 255, 255);
     return asteroid;
 }
@@ -64,8 +64,9 @@ void drawAsteroid(Asteroid *asteroid)
 {
     ALLEGRO_TRANSFORM transform;
     al_identity_transform(&transform);
-    al_rotate_transform(&transform, degreesToRadians(90.0) - asteroid->heading);
-    al_translate_transform(&transform, asteroid->x, asteroid->y);
+    al_rotate_transform(&transform, asteroid->twist);
+    al_translate_transform(&transform, asteroid->x * asteroid->scale, asteroid->y * asteroid->scale);
+    al_scale_transform(&transform, 1.0 / asteroid->scale, 1.0 / asteroid->scale);
     al_use_transform(&transform);
     al_draw_line(-20, 20, -25, 5, asteroid->color, 2.0f);
     al_draw_line(-25, 5, -25, -10, asteroid->color, 2.0f);
@@ -88,4 +89,25 @@ void updateAsteroid(Asteroid *asteroid)
     asteroid->twist += asteroid->rotateVelocity;
     asteroid->x += cos(asteroid->heading) * asteroid->speed;
     asteroid->y += sin(asteroid->heading) * asteroid->speed;
+}
+
+float asteroidsX(Asteroid *asteroid)
+{
+    return asteroid->x;
+}
+
+float asteroidsY(Asteroid *asteroid)
+{
+    return asteroid->y;
+}
+
+float asteroidsWidth()
+{
+    static const float width = 25.0;
+    return width;
+}
+
+float asteroidsHeight()
+{
+    return asteroidsWidth();
 }

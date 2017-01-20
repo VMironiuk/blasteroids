@@ -14,6 +14,9 @@ void drawBlast(Blast *blast);
 void updateBlast(Blast *blast);
 void drawBlastQueue(struct BlastQueue *queue);
 void updateBlastQueue(struct BlastQueue *queue);
-
+float blastsX(Blast *blast);
+float blastsY(Blast *blast);
+float blastsWidth();
+float blastsHeight();
 
 #endif

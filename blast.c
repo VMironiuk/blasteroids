@@ -87,3 +87,25 @@ void updateBlastQueue(BlastQueue *queue)
             updateBlast(blast);
     }
 }
+
+float blastsX(Blast *blast)
+{
+    return blast->x;
+}
+
+float blastsY(Blast *blast)
+{
+    return blast->y;
+}
+
+float blastsWidth()
+{
+    static const float width = 1.0;
+    return width;
+}
+
+float blastsHeight()
+{
+    static const float height = 9.0;
+    return height;
+}
