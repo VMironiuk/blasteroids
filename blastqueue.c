@@ -85,3 +85,20 @@ Blast *blastQueueNext(BlastQueue *queue)
     queue->current = queue->current->next;
     return blast;
 }
+
+void drawBlastQueue(BlastQueue *queue)
+{
+    while (blastQueueHasNext(queue))
+        drawBlast(blastQueueNext(queue));
+}
+
+void updateBlastQueue(BlastQueue *queue)
+{
+    while (blastQueueHasNext(queue)) {
+        Blast *blast = blastQueueNext(queue);
+        if (isBlastOutOfBoundaries(blast))
+            popBlast(queue);
+        else
+            updateBlast(blast);
+    }
+}

@@ -15,6 +15,7 @@ struct Asteroid
     float speed;
     float rotateVelocity;
     float scale;
+    int isPartitioned;
     ALLEGRO_COLOR color;
 };
 
@@ -51,8 +52,24 @@ Asteroid *createAsteroid(float scale)
     asteroid->speed = rand() % 5 + 2;
     asteroid->rotateVelocity = degreesToRadians(rand() % 5);
     asteroid->scale = scale;
+    asteroid->isPartitioned = 0;
     asteroid->color = al_map_rgb(255, 255, 255);
     return asteroid;
+}
+
+void makeAsteroidPartition(Asteroid *main, Asteroid *left, Asteroid *right)
+{
+    left = createAsteroid(2.0);
+    left->heading = main->heading - degreesToRadians(20.0);
+    left->x = main->x / main->scale;
+    left->y = main->y / main->scale;
+    left->isPartitioned = 1;
+
+    right = createAsteroid(2.0);
+    right->heading = main->heading - degreesToRadians(20.0);
+    right->x = main->x / main->scale;
+    right->y = main->y / main->scale;
+    right->isPartitioned = 1;
 }
 
 void destroyAsteroid(Asteroid *asteroid)
@@ -110,4 +127,9 @@ float asteroidsWidth()
 float asteroidsHeight()
 {
     return asteroidsWidth();
+}
+
+int isAsteroidPartitioned(Asteroid *asteroid)
+{
+    return asteroid->isPartitioned;
 }

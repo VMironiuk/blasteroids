@@ -1,9 +1,8 @@
 #include "spaceship.h"
 #include "global.h"
-#include "blast.h"
 #include "blastqueue.h"
-#include "asteroid.h"
 #include "collisions.h"
+#include "asteroidbelt.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -57,8 +56,7 @@ int main(/*int argc, char **argv*/)
 
     Spaceship *sulaco = createSpaceship();
     BlastQueue *blastQueue = createBlastQueue();
-    // TODO: remove this asteroid later
-    Asteroid *asteroid = createAsteroid(1.0);
+    AsteroidBelt *asteroidBelt = createAsteroidBelt();
 
     int score = 0;
     int lives = 3;
@@ -70,8 +68,8 @@ int main(/*int argc, char **argv*/)
 	if (event.type == ALLEGRO_EVENT_TIMER) {
 	    al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            score += checkBlastAsteroidCollision(blastQueue, asteroid);
-            lives -= checkSpaceshipAsteroidCollision(sulaco, asteroid);
+            score += checkBlastAsteroidCollision(blastQueue, asteroidBelt);
+            lives -= checkSpaceshipAsteroidCollision(sulaco, asteroidBelt);
 
 	    updateSpaceship(sulaco);
 	    updateSpaceshipsBlaster(sulaco, blastQueue);
@@ -80,8 +78,8 @@ int main(/*int argc, char **argv*/)
 	    updateBlastQueue(blastQueue);
 	    drawBlastQueue(blastQueue);
 
-            updateAsteroid(asteroid);
-            drawAsteroid(asteroid);
+            //updateAsteroidBelt(asteroidBelt);
+            //drawAsteroidBelt(asteroidBelt);
 
 	    al_flip_display();
 	}
@@ -134,13 +132,12 @@ int main(/*int argc, char **argv*/)
 	}
     }
 
-    al_destroy_timer(timer);
-    al_destroy_display(display);
-    al_destroy_event_queue(eventQueue);
-    destroySpaceship(sulaco);
+    destroyAsteroidBelt(asteroidBelt);
     destroyBlastQueue(blastQueue);
-    // TODO: remove later
-    destroyAsteroid(asteroid);
+    destroySpaceship(sulaco);
+    al_destroy_event_queue(eventQueue);
+    al_destroy_display(display);
+    al_destroy_timer(timer);
 
     return 0;
 }

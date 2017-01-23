@@ -11,5 +11,7 @@ void pushBlast(BlastQueue *queue, struct Blast *blast);
 void popBlast(BlastQueue *queue);
 int blastQueueHasNext(BlastQueue *queue);
 struct Blast *blastQueueNext(BlastQueue *queue);
+void drawBlastQueue(BlastQueue *queue);
+void updateBlastQueue(BlastQueue *queue);
 
 #endif

@@ -2,10 +2,10 @@
 #define COLLISIONS_H
 
 struct BlastQueue;
-struct Asteroid;
+struct AsteroidBelt;
 struct Spaceship;
 
-int checkBlastAsteroidCollision(struct BlastQueue *blastQueue, struct Asteroid *asteroid);
-int checkSpaceshipAsteroidCollision(struct Spaceship *spaceship, struct Asteroid *asteroid);
+int checkBlastAsteroidCollision(struct BlastQueue *blastQueue, struct AsteroidBelt *asteroidBelt);
+int checkSpaceshipAsteroidCollision(struct Spaceship *spaceship, struct AsteroidBelt *asteroidBelt);
 
 #endif
