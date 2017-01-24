@@ -78,8 +78,8 @@ int main(/*int argc, char **argv*/)
 	    updateBlastQueue(blastQueue);
 	    drawBlastQueue(blastQueue);
 
-            //updateAsteroidBelt(asteroidBelt);
-            //drawAsteroidBelt(asteroidBelt);
+            updateAsteroidBelt(asteroidBelt);
+            drawAsteroidBelt(asteroidBelt);
 
 	    al_flip_display();
 	}
