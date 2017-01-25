@@ -1,7 +1,6 @@
 #include "spaceship.h"
 #include "global.h"
 #include "blastqueue.h"
-#include "collisions.h"
 #include "asteroidbelt.h"
 
 #include <allegro5/allegro.h>
