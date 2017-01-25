@@ -2,6 +2,7 @@
 #include "global.h"
 #include "blast.h"
 #include "blastqueue.h"
+#include "asteroidbelt.h"
 
 #include <allegro5/allegro_primitives.h>
 #include <math.h>
@@ -180,3 +181,7 @@ void shootSpaceshipOff()
     actions[Shoot] = false;
 }
 
+int checkSpaceshipAsteroidCollision(Spaceship *spaceship, AsteroidBelt *asteroidBelt)
+{
+    return 0;
+}

@@ -2,6 +2,7 @@
 #define BLASTQUEUE_H
 
 struct Blast;
+struct AsteroidBelt;
 
 typedef struct BlastQueue BlastQueue;
 
@@ -13,5 +14,6 @@ int blastQueueHasNext(BlastQueue *queue);
 struct Blast *blastQueueNext(BlastQueue *queue);
 void drawBlastQueue(BlastQueue *queue);
 void updateBlastQueue(BlastQueue *queue);
+int checkBlastAsteroidCollision(BlastQueue *blastQueue, struct AsteroidBelt *asteroidBelt);
 
 #endif

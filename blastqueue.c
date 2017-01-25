@@ -1,5 +1,6 @@
 #include "blastqueue.h"
 #include "blast.h"
+#include "asteroidbelt.h"
 
 #include <assert.h>
 
@@ -101,4 +102,16 @@ void updateBlastQueue(BlastQueue *queue)
         else
             updateBlast(blast);
     }
+}
+
+int checkBlastAsteroidCollision(BlastQueue *blastQueue, AsteroidBelt *asteroidBelt)
+{
+    static const int pointsHitting = 100;
+    while (blastQueueHasNext(blastQueue)) {
+        Blast *currentBlast = blastQueueNext(blastQueue);
+        if (isBlastHitToAsteroid(currentBlast, asteroidBelt))
+            return pointsHitting;
+    }
+
+    return 0;
 }

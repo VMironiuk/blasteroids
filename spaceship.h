@@ -4,6 +4,7 @@
 #include <allegro5/allegro.h>
 
 struct BlastQueue;
+struct AsteroidBelt;
 
 typedef struct Spaceship Spaceship;
 
@@ -26,5 +27,6 @@ void turnSpaceshipLeftOff();
 void turnSpaceshipRightOff();
 void shootSpaceshipOn();
 void shootSpaceshipOff();
+int checkSpaceshipAsteroidCollision(Spaceship *spaceship, struct AsteroidBelt *asteroidBelt);
 
 #endif

@@ -5,6 +5,7 @@
 #define ASTEROID_BELT_COLUMN_COUNT 2
 
 struct Asteroid;
+struct Blast;
 
 typedef struct AsteroidBelt AsteroidBelt;
 
@@ -15,5 +16,6 @@ void setAsteroid(AsteroidBelt *asteroidBelt, int row, int column, struct Asteroi
 struct Asteroid *asteroidOf(AsteroidBelt *asteroidBelt, int row, int column);
 void drawAsteroidBelt(AsteroidBelt *asteroidBelt);
 void updateAsteroidBelt(AsteroidBelt *asteroidBelt);
+int isBlastHitToAsteroid(struct Blast *blast, AsteroidBelt *asteroidBelt);
 
 #endif
