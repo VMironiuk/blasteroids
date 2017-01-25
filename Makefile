@@ -15,7 +15,6 @@ OBJECTS = blasteroids.o \
 	blast.o \
 	blastqueue.o \
 	asteroid.o \
-	collisions.o \
 	asteroidbelt.o
 TARGET = blasteroids
 
@@ -43,9 +42,6 @@ blastqueue.o: blastqueue.c blastqueue.h
 
 asteroid.o: asteroid.c asteroid.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o asteroid.o asteroid.c
-
-collisions.o: collisions.c collisions.h
-	$(CC) -c $(CFLAGS) $(INCPATH) -o collisions.o collisions.c
 
 asteroidbelt.o: asteroidbelt.c
 	$(CC) -c $(CFLAGS) $(INCPATH) -o asteroidbelt.o asteroidbelt.c
