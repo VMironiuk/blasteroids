@@ -15,6 +15,7 @@ struct Spaceship
     float heading;
     float movingDirection;
     float speed;
+    bool isGone;
     ALLEGRO_COLOR color;
 };
 
@@ -27,19 +28,19 @@ void limitBoundariesForSpaceship(Spaceship *spaceship)
     al_get_display_mode(al_get_num_display_modes() - 1, &adm);
 
     if (spaceship->y < 0)
-	spaceship->y = adm.height;
+    spaceship->y = adm.height;
     else if (spaceship->y > adm.height)
-	spaceship->y = 0;
+    spaceship->y = 0;
     else if (spaceship->x < 0)
-	spaceship->x = adm.width;
+    spaceship->x = adm.width;
     else if (spaceship->x > adm.width)
-	spaceship->x = 0;
+    spaceship->x = 0;
 }
 
 void moveChanged(Spaceship *spaceship)
 {
     if (spaceship->movingDirection != spaceship->heading)
-	spaceship->speed = 0.0;
+    spaceship->speed = 0.0;
     spaceship->movingDirection = spaceship->heading;
 }
 
@@ -57,6 +58,7 @@ Spaceship *createSpaceship()
     spaceship->heading = degreesToRadians(90.0);
     spaceship->movingDirection = spaceship->heading;
     spaceship->speed = 0.25;
+    spaceship->isGone = false;
     spaceship->color = al_map_rgb(0, 255, 0);
     return spaceship;
 }
@@ -84,22 +86,22 @@ void updateSpaceship(Spaceship *spaceship)
     limitBoundariesForSpaceship(spaceship);
 
     if (actions[MoveForward]) {
-	moveChanged(spaceship);
-	if (spaceship->speed < 15.0)
-	    spaceship->speed += 0.25;
+    moveChanged(spaceship);
+    if (spaceship->speed < 15.0)
+        spaceship->speed += 0.25;
     }
 
     if (actions[MoveBackward]) {
-	moveChanged(spaceship);
-	if (spaceship->speed > -15.0)
-	    spaceship->speed -= 0.25;
+    moveChanged(spaceship);
+    if (spaceship->speed > -15.0)
+        spaceship->speed -= 0.25;
     }
 
     if (actions[TurnLeft])
-	spaceship->heading += degreesToRadians(5.0);
+    spaceship->heading += degreesToRadians(5.0);
 
     if (actions[TurnRight])
-	spaceship->heading -= degreesToRadians(5.0);
+    spaceship->heading -= degreesToRadians(5.0);
 
     spaceship->x += cos(spaceship->movingDirection) * spaceship->speed;
     spaceship->y -= sin(spaceship->movingDirection) * spaceship->speed;
@@ -108,7 +110,7 @@ void updateSpaceship(Spaceship *spaceship)
 void updateSpaceshipsBlaster(Spaceship *spaceship, BlastQueue *queue)
 {
     if (actions[Shoot])
-	pushBlast(queue, createBlast(spaceship));
+    pushBlast(queue, createBlast(spaceship));
 }
 
 float spaceshipsX(const Spaceship *spaceship)
@@ -119,6 +121,18 @@ float spaceshipsX(const Spaceship *spaceship)
 float spaceshipsY(const Spaceship *spaceship)
 {
     return spaceship->y;
+}
+
+float spaceshipsWidth()
+{
+    static const float size = 21.0;
+
+    return size;
+}
+
+float spaceshipsHeight()
+{
+    return spaceshipsWidth();
 }
 
 float spaceshipsHeading(const Spaceship *spaceship)
@@ -183,5 +197,14 @@ void shootSpaceshipOff()
 
 int checkSpaceshipAsteroidCollision(Spaceship *spaceship, AsteroidBelt *asteroidBelt)
 {
+    if (isAsteroidHitToSpaceship(spaceship, asteroidBelt)) {
+        spaceship->isGone = true;
+        return 1;
+    }
     return 0;
+}
+
+bool isSpaceshipGone(Spaceship *spaceship)
+{
+    return spaceship->isGone;
 }

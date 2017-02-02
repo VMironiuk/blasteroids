@@ -15,6 +15,8 @@ void updateSpaceship(Spaceship *spaceship);
 void updateSpaceshipsBlaster(Spaceship *spaceship, struct BlastQueue *queue);
 float spaceshipsX(const Spaceship *spaceship);
 float spaceshipsY(const Spaceship *spaceship);
+float spaceshipsWidth();
+float spaceshipsHeight();
 float spaceshipsHeading(const Spaceship *spaceship);
 ALLEGRO_COLOR spaceshipsColor(const Spaceship *spaceship);
 void moveSpaceshipForwardOn();
@@ -28,5 +30,6 @@ void turnSpaceshipRightOff();
 void shootSpaceshipOn();
 void shootSpaceshipOff();
 int checkSpaceshipAsteroidCollision(Spaceship *spaceship, struct AsteroidBelt *asteroidBelt);
+bool isSpaceshipGone(Spaceship *spaceship);
 
 #endif

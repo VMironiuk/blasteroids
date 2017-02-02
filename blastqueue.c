@@ -23,9 +23,9 @@ struct BlastQueue
 BlastQueue *createBlastQueue()
 {
     BlastQueue *queue = (BlastQueue *)malloc(sizeof *queue);
-
+    
     assert(queue);
-
+    
     queue->head = 0;
     queue->tail = 0;
     queue->current = 0;
@@ -34,12 +34,8 @@ BlastQueue *createBlastQueue()
 
 void destroyBlastQueue(BlastQueue *queue)
 {
-    while (queue->head) {
-	free(queue->head->blast);
-	Link temp = queue->head;
-	queue->head = queue->head->next;
-	free(temp);
-    }
+    while (queue->head)
+        popBlast(queue);
 
     free(queue);
 }
@@ -49,12 +45,12 @@ void pushBlast(BlastQueue *queue, Blast *blast)
     Link temp = (Node *)malloc(sizeof *temp);
     temp->blast = blast;
     temp->next = 0;
-
+    
     if (!queue->tail) {
-	queue->head = queue->tail = queue->current = temp;
+        queue->head = queue->tail = queue->current = temp;
     } else {
-	queue->tail->next = temp;
-	queue->tail = temp;
+        queue->tail->next = temp;
+        queue->tail = temp;
     }
 }
 
@@ -62,12 +58,12 @@ void popBlast(BlastQueue *queue)
 {
     if (!queue->head)
         return;
-
+    
     Link temp = queue->head;
     queue->head = queue->head->next;
     free(temp->blast);
     free(temp);
-
+    
     if (!queue->head)
         queue->tail = queue->current = 0;
 }
@@ -112,6 +108,6 @@ int checkBlastAsteroidCollision(BlastQueue *blastQueue, AsteroidBelt *asteroidBe
         if (isBlastHitToAsteroid(currentBlast, asteroidBelt))
             return pointsHitting;
     }
-
+    
     return 0;
 }

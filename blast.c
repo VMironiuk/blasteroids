@@ -18,9 +18,9 @@ struct Blast
 Blast *createBlast(const Spaceship *spaceship)
 {
     Blast *blast = (Blast*)malloc(sizeof(Blast));
-
+    
     assert(blast);
-
+    
     blast->x = spaceshipsX(spaceship);
     blast->y = spaceshipsY(spaceship);
     blast->heading = spaceshipsHeading(spaceship);
@@ -38,9 +38,9 @@ int isBlastOutOfBoundaries(Blast *blast)
 {
     ALLEGRO_DISPLAY_MODE adm;
     al_get_display_mode(al_get_num_display_modes() - 1, &adm);
-
+    
     int result = 0;
-
+    
     if (blast->y < 0)
         result = 1;
     else if (blast->y > adm.height)
@@ -49,7 +49,7 @@ int isBlastOutOfBoundaries(Blast *blast)
         result = 1;
     else if (blast->x > adm.width)
         result = 1;
-
+    
     return result;
 }
 
