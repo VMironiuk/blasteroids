@@ -6,6 +6,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 
 #include <stdio.h>
@@ -21,6 +22,8 @@ void init()
     if (!al_install_keyboard())
         error("Failed to install a keyboard driver");
     al_init_font_addon();
+    if (!al_init_ttf_addon())
+        error("Failed to initialize the ttf addon");
 }
 
 int main(/*int argc, char **argv*/)
@@ -54,13 +57,20 @@ int main(/*int argc, char **argv*/)
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
     al_start_timer(timer);
-    
+
     Spaceship *sulaco = createSpaceship();
     BlastQueue *blastQueue = createBlastQueue();
     AsteroidBelt *asteroidBelt = createAsteroidBelt();
+
+    ALLEGRO_FONT *font = al_load_font("Planetium_X_Shadowed.otf", 72, 0);
+    if (!font) {
+        al_destroy_timer(timer);
+        al_destroy_display(display);
+        error("Failed to load font");
+    }
     
-    int score = 0;
-    int lives = 3;
+    unsigned score = 0;
+    size_t lives = 3;
     bool doExit = false;
     while (!doExit) {
         if (isSpaceshipGone(sulaco)) {
@@ -74,7 +84,7 @@ int main(/*int argc, char **argv*/)
         
         if (event.type == ALLEGRO_EVENT_TIMER) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            
+
             updateSpaceship(sulaco);
             updateSpaceshipsBlaster(sulaco, blastQueue);
             drawSpaceship(sulaco);
@@ -87,6 +97,20 @@ int main(/*int argc, char **argv*/)
 
             score += checkBlastAsteroidCollision(blastQueue, asteroidBelt);
             lives -= checkSpaceshipAsteroidCollision(sulaco, asteroidBelt);
+
+            ALLEGRO_TRANSFORM transform;
+            al_identity_transform(&transform);
+            al_use_transform(&transform);
+
+            char score_str[16];
+            sprintf(score_str, "%u", score);
+            al_draw_text(font, al_map_rgb(192, 192, 192), 10, 10, ALLEGRO_ALIGN_LEFT, score_str);
+
+            size_t i;
+            float x = 25.0;
+            const float y = 110.0;
+            for (i = 0; i < lives; ++i, x += 40.0)
+                drawLive(x, y);
 
             al_flip_display();
         }
@@ -142,10 +166,7 @@ int main(/*int argc, char **argv*/)
         }
     }
 
-    printf("%d\n", score);
-    printf("%d\n", lives);
-    printf("%s\n", "GAME OVER");
-    
+    al_destroy_font(font);
     destroyAsteroidBelt(asteroidBelt);
     destroyBlastQueue(blastQueue);
     destroySpaceship(sulaco);

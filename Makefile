@@ -5,7 +5,7 @@ LINK = gcc
 CFLAGS = -pipe -g -Wall -W -fPIC
 DEL_FILE = rm -f
 INCPATH = -I.
-LIBS = -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primitives -lm
+LIBS = -lallegro -lallegro_main -lallegro_image -lallegro_font -lallegro_primitives -lallegro_ttf -lm
 
 # Files
 
