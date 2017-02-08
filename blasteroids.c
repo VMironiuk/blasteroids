@@ -8,7 +8,6 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
-
 #include <stdio.h>
 
 void init()
@@ -46,8 +45,8 @@ int main(/*int argc, char **argv*/)
     
     ALLEGRO_EVENT_QUEUE *eventQueue = al_create_event_queue();
     if (!eventQueue) {
-        al_destroy_timer(timer);
         al_destroy_display(display);
+        al_destroy_timer(timer);
         error("Failed to create event queue");
     }
     
@@ -64,8 +63,12 @@ int main(/*int argc, char **argv*/)
 
     ALLEGRO_FONT *font = al_load_font("Planetium_X_Shadowed.otf", 72, 0);
     if (!font) {
-        al_destroy_timer(timer);
+        destroyAsteroidBelt(asteroidBelt);
+        destroyBlastQueue(blastQueue);
+        destroySpaceship(sulaco);
+        al_destroy_event_queue(eventQueue);
         al_destroy_display(display);
+        al_destroy_timer(timer);
         error("Failed to load font");
     }
     

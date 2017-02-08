@@ -3,6 +3,10 @@
 
 #include <allegro5/allegro.h>
 
+#define SPACESHIP_WIDTH 21.0
+#define SPACESHIP_HEIGHT 21.0
+#define SPACESHIP_COLOR al_map_rgb(0, 255, 0)
+
 struct BlastQueue;
 struct AsteroidBelt;
 
@@ -13,12 +17,9 @@ void destroySpaceship(Spaceship *spaceship);
 void drawSpaceship(Spaceship *spaceship);
 void updateSpaceship(Spaceship *spaceship);
 void updateSpaceshipsBlaster(Spaceship *spaceship, struct BlastQueue *queue);
-float spaceshipsX(const Spaceship *spaceship);
-float spaceshipsY(const Spaceship *spaceship);
-float spaceshipsWidth();
-float spaceshipsHeight();
-float spaceshipsHeading(const Spaceship *spaceship);
-ALLEGRO_COLOR spaceshipsColor(const Spaceship *spaceship);
+float spaceshipX(const Spaceship *spaceship);
+float spaceshipY(const Spaceship *spaceship);
+float spaceshipHeading(const Spaceship *spaceship);
 void moveSpaceshipForwardOn();
 void moveSpaceshipBackwardOn();
 void turnSpaceshipLeftOn();

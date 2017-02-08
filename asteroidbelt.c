@@ -126,15 +126,15 @@ int isBlastHitToAsteroid(Blast *blast, AsteroidBelt *asteroidBelt)
         int y1 = blastsY(blast) - blastsHeight() / 2;
         int w1 = blastsWidth();
         int h1 = blastsHeight();
-        int x2 = asteroidsX(asteroid) - asteroidsWidth() / 2;
-        int y2 = asteroidsY(asteroid) - asteroidsHeight() / 2;
-        int w2 = asteroidsWidth();
-        int h2 = asteroidsHeight();
+        int x2 = asteroidX(asteroid) - ASTEROID_WIDTH / 2;
+        int y2 = asteroidY(asteroid) - ASTEROID_HEIGHT / 2;
+        int w2 = ASTEROID_WIDTH;
+        int h2 = ASTEROID_HEIGHT;
         if (isBoundingBoxCollision(x1, y1, w1, h1, x2, y2, w2, h2)) {
-            if (!isAsteroidPartitioned(asteroid)) {
+            if (!isAsteroidBroken(asteroid)) {
                 Asteroid *leftAsteroid = 0;
                 Asteroid *rightAsteroid = 0;
-                makeAsteroidPartition(asteroid, &leftAsteroid, &rightAsteroid);
+                breakAsteroid(asteroid, &leftAsteroid, &rightAsteroid);
                 pushBackAsteroid(asteroidBelt, leftAsteroid);
                 pushBackAsteroid(asteroidBelt, rightAsteroid);
             }
@@ -151,14 +151,14 @@ int isAsteroidHitToSpaceship(struct Spaceship *spaceship, AsteroidBelt *asteroid
     Link current = asteroidBelt->head;
     while (current) {
         Asteroid *asteroid = current->asteroid;
-        int x1 = spaceshipsX(spaceship) - spaceshipsWidth() / 2;
-        int y1 = spaceshipsY(spaceship) - spaceshipsHeight() / 2;
-        int w1 = spaceshipsWidth();
-        int h1 = spaceshipsHeight();
-        int x2 = asteroidsX(asteroid) - asteroidsWidth() / 2;
-        int y2 = asteroidsY(asteroid) - asteroidsHeight() / 2;
-        int w2 = asteroidsWidth();
-        int h2 = asteroidsHeight();
+        int x1 = spaceshipX(spaceship) - SPACESHIP_WIDTH / 2;
+        int y1 = spaceshipY(spaceship) - SPACESHIP_HEIGHT / 2;
+        int w1 = SPACESHIP_WIDTH;
+        int h1 = SPACESHIP_HEIGHT;
+        int x2 = asteroidX(asteroid) - ASTEROID_WIDTH / 2;
+        int y2 = asteroidY(asteroid) - ASTEROID_HEIGHT / 2;
+        int w2 = ASTEROID_WIDTH;
+        int h2 = ASTEROID_HEIGHT;
 
         if (isBoundingBoxCollision(x1, y1, w1, h1, x2, y2, w2, h2))
             return 1;

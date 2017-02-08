@@ -15,8 +15,7 @@ struct Asteroid
     float speed;
     float rotateVelocity;
     float scale;
-    int isPartitioned;
-    int isGone;
+    bool isBroken;
     ALLEGRO_COLOR color;
 };
 
@@ -53,24 +52,24 @@ Asteroid *createAsteroid(float scale)
     asteroid->speed = rand() % 5 + 2;
     asteroid->rotateVelocity = degreesToRadians(rand() % 5);
     asteroid->scale = scale;
-    asteroid->isPartitioned = 0;
+    asteroid->isBroken = false;
     asteroid->color = al_map_rgb(255, 255, 255);
     return asteroid;
 }
 
-void makeAsteroidPartition(Asteroid *main, Asteroid **left, Asteroid **right)
+void breakAsteroid(Asteroid *main, Asteroid **left, Asteroid **right)
 {
     *left = createAsteroid(2.0);
     (*left)->heading = main->heading - degreesToRadians(20.0);
     (*left)->x = main->x / main->scale - 50;
     (*left)->y = main->y / main->scale;
-    (*left)->isPartitioned = 1;
+    (*left)->isBroken = true;
     
     *right = createAsteroid(2.0);
     (*right)->heading = main->heading + degreesToRadians(20.0);
     (*right)->x = main->x / main->scale + 50;
     (*right)->y = main->y / main->scale;
-    (*right)->isPartitioned = 1;
+    (*right)->isBroken = true;
 }
 
 void destroyAsteroid(Asteroid *asteroid)
@@ -109,28 +108,17 @@ void updateAsteroid(Asteroid *asteroid)
     asteroid->y += sin(asteroid->heading) * asteroid->speed;
 }
 
-float asteroidsX(Asteroid *asteroid)
+float asteroidX(Asteroid *asteroid)
 {
     return asteroid->x;
 }
 
-float asteroidsY(Asteroid *asteroid)
+float asteroidY(Asteroid *asteroid)
 {
     return asteroid->y;
 }
 
-float asteroidsWidth()
+bool isAsteroidBroken(Asteroid *asteroid)
 {
-    static const float width = 25.0;
-    return width;
-}
-
-float asteroidsHeight()
-{
-    return asteroidsWidth();
-}
-
-int isAsteroidPartitioned(Asteroid *asteroid)
-{
-    return asteroid->isPartitioned;
+    return asteroid->isBroken;
 }

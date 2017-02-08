@@ -59,7 +59,7 @@ Spaceship *createSpaceship()
     spaceship->movingDirection = spaceship->heading;
     spaceship->speed = 0.25;
     spaceship->isGone = false;
-    spaceship->color = al_map_rgb(0, 255, 0);
+    spaceship->color = SPACESHIP_COLOR;
     return spaceship;
 }
 
@@ -113,36 +113,19 @@ void updateSpaceshipsBlaster(Spaceship *spaceship, BlastQueue *queue)
     pushBlast(queue, createBlast(spaceship));
 }
 
-float spaceshipsX(const Spaceship *spaceship)
+float spaceshipX(const Spaceship *spaceship)
 {
     return spaceship->x;
 }
 
-float spaceshipsY(const Spaceship *spaceship)
+float spaceshipY(const Spaceship *spaceship)
 {
     return spaceship->y;
 }
 
-float spaceshipsWidth()
-{
-    static const float size = 21.0;
-
-    return size;
-}
-
-float spaceshipsHeight()
-{
-    return spaceshipsWidth();
-}
-
-float spaceshipsHeading(const Spaceship *spaceship)
+float spaceshipHeading(const Spaceship *spaceship)
 {
     return spaceship->heading;
-}
-
-ALLEGRO_COLOR spaceshipsColor(const Spaceship *spaceship)
-{
-    return spaceship->color;
 }
 
 void moveSpaceshipForwardOn()
@@ -197,11 +180,14 @@ void shootSpaceshipOff()
 
 int checkSpaceshipAsteroidCollision(Spaceship *spaceship, AsteroidBelt *asteroidBelt)
 {
+    static const int saveLive = 0;
+    static const int lostLive = 1;
+
     if (isAsteroidHitToSpaceship(spaceship, asteroidBelt)) {
         spaceship->isGone = true;
-        return 1;
+        return lostLive;
     }
-    return 0;
+    return saveLive;
 }
 
 bool isSpaceshipGone(Spaceship *spaceship)
