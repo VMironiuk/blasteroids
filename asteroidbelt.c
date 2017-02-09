@@ -122,10 +122,10 @@ int isBlastHitToAsteroid(Blast *blast, AsteroidBelt *asteroidBelt)
     Link current = asteroidBelt->head;
     while (current) {
         Asteroid *asteroid = current->asteroid;
-        int x1 = blastsX(blast) - blastsWidth() / 2;
-        int y1 = blastsY(blast) - blastsHeight() / 2;
-        int w1 = blastsWidth();
-        int h1 = blastsHeight();
+        int x1 = blastX(blast) - BLAST_WIDTH / 2;
+        int y1 = blastY(blast) - BLAST_HEIGHT / 2;
+        int w1 = BLAST_WIDTH;
+        int h1 = BLAST_HEIGHT;
         int x2 = asteroidX(asteroid) - ASTEROID_WIDTH / 2;
         int y2 = asteroidY(asteroid) - ASTEROID_HEIGHT / 2;
         int w2 = ASTEROID_WIDTH;

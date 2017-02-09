@@ -34,25 +34,6 @@ void destroyBlast(Blast *blast)
     free(blast);
 }
 
-int isBlastOutOfBoundaries(Blast *blast)
-{
-    ALLEGRO_DISPLAY_MODE adm;
-    al_get_display_mode(al_get_num_display_modes() - 1, &adm);
-    
-    int result = 0;
-    
-    if (blast->y < 0)
-        result = 1;
-    else if (blast->y > adm.height)
-        result = 1;
-    else if (blast->x < 0)
-        result = 1;
-    else if (blast->x > adm.width)
-        result = 1;
-    
-    return result;
-}
-
 void drawBlast(Blast *blast)
 {
     ALLEGRO_TRANSFORM transform;
@@ -69,24 +50,12 @@ void updateBlast(Blast *blast)
     blast->y -= sin(blast->heading) * blast->speed;
 }
 
-float blastsX(Blast *blast)
+float blastX(Blast *blast)
 {
     return blast->x;
 }
 
-float blastsY(Blast *blast)
+float blastY(Blast *blast)
 {
     return blast->y;
-}
-
-float blastsWidth()
-{
-    static const float width = 1.0;
-    return width;
-}
-
-float blastsHeight()
-{
-    static const float height = 9.0;
-    return height;
 }

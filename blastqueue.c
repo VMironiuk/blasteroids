@@ -20,6 +20,23 @@ struct BlastQueue
     Link current;
 };
 
+bool isBlastOutOfBoundaries(Blast *blast)
+{
+    ALLEGRO_DISPLAY_MODE adm;
+    al_get_display_mode(al_get_num_display_modes() - 1, &adm);
+    
+    if (blastY(blast) < 0)
+        return true;
+    else if (blastY(blast) > adm.height)
+        return true;
+    else if (blastX(blast) < 0)
+        return true;
+    else if (blastX(blast) > adm.width)
+        return true;
+    
+    return false;
+}
+
 BlastQueue *createBlastQueue()
 {
     BlastQueue *queue = (BlastQueue *)malloc(sizeof *queue);
