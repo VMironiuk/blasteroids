@@ -4,7 +4,6 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <math.h>
 
 #include <allegro5/allegro_primitives.h>
 
@@ -16,7 +15,7 @@ void error(const char *msg)
 
 float degreesToRadians(float degrees)
 {
-    return degrees * M_PI / 180;
+    return degrees * ALLEGRO_PI / 180;
 }
 
 int isBoundingBoxCollision(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2)
@@ -28,7 +27,6 @@ void drawLive(float x, float y)
 {
     ALLEGRO_TRANSFORM transform;
     al_identity_transform(&transform);
-    // al_rotate_transform(&transform, degreesToRadians(90.0) - spaceship->heading);
     al_translate_transform(&transform, x, y);
     al_use_transform(&transform);
     al_draw_line(-8, 9, 0, -11, al_map_rgb(0, 255, 0), 3.0f);

@@ -178,16 +178,21 @@ void shootSpaceshipOff()
     actions[Shoot] = false;
 }
 
-int checkSpaceshipAsteroidCollision(Spaceship *spaceship, AsteroidBelt *asteroidBelt)
-{
-    static const int saveLive = 0;
-    static const int lostLive = 1;
+// int checkSpaceshipAsteroidCollision(Spaceship *spaceship, AsteroidBelt *asteroidBelt)
+// {
+//     static const int saveLive = 0;
+//     static const int lostLive = 1;
 
-    if (isAsteroidHitToSpaceship(spaceship, asteroidBelt)) {
-        spaceship->isGone = true;
-        return lostLive;
-    }
-    return saveLive;
+//     if (isAsteroidHitToSpaceship(spaceship, asteroidBelt)) {
+//         spaceship->isGone = true;
+//         return lostLive;
+//     }
+//     return saveLive;
+// }
+
+void setSpaceshipGone(Spaceship *spaceship, bool isGone)
+{
+    spaceship->isGone = isGone;
 }
 
 bool isSpaceshipGone(Spaceship *spaceship)

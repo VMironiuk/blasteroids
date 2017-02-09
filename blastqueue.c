@@ -57,6 +57,23 @@ void destroyBlastQueue(BlastQueue *queue)
     free(queue);
 }
 
+void drawBlastQueue(BlastQueue *queue)
+{
+    while (blastQueueHasNext(queue))
+        drawBlast(blastQueueNext(queue));
+}
+
+void updateBlastQueue(BlastQueue *queue)
+{
+    while (blastQueueHasNext(queue)) {
+        Blast *blast = blastQueueNext(queue);
+        if (isBlastOutOfBoundaries(blast))
+            popBlast(queue);
+        else
+            updateBlast(blast);
+    }
+}
+
 void pushBlast(BlastQueue *queue, Blast *blast)
 {
     Link temp = (Node *)malloc(sizeof *temp);
@@ -85,9 +102,9 @@ void popBlast(BlastQueue *queue)
         queue->tail = queue->current = 0;
 }
 
-int blastQueueHasNext(BlastQueue *queue)
+bool blastQueueHasNext(BlastQueue *queue)
 {
-    int result = (queue->current != 0);
+    bool result = (queue->current != 0);
     if (!result)
         queue->current = queue->head;
     return result;
@@ -100,31 +117,16 @@ Blast *blastQueueNext(BlastQueue *queue)
     return blast;
 }
 
-void drawBlastQueue(BlastQueue *queue)
-{
-    while (blastQueueHasNext(queue))
-        drawBlast(blastQueueNext(queue));
-}
+// int checkBlastAsteroidCollision(BlastQueue *blastQueue, AsteroidBelt *asteroidBelt)
+// {
+//     static const int pointsHitting = 100;
+//     static const int pointsMiss = 0;
 
-void updateBlastQueue(BlastQueue *queue)
-{
-    while (blastQueueHasNext(queue)) {
-        Blast *blast = blastQueueNext(queue);
-        if (isBlastOutOfBoundaries(blast))
-            popBlast(queue);
-        else
-            updateBlast(blast);
-    }
-}
-
-int checkBlastAsteroidCollision(BlastQueue *blastQueue, AsteroidBelt *asteroidBelt)
-{
-    static const int pointsHitting = 100;
-    while (blastQueueHasNext(blastQueue)) {
-        Blast *currentBlast = blastQueueNext(blastQueue);
-        if (isBlastHitToAsteroid(currentBlast, asteroidBelt))
-            return pointsHitting;
-    }
+//     while (blastQueueHasNext(blastQueue)) {
+//         Blast *currentBlast = blastQueueNext(blastQueue);
+//         if (isBlastHitToAsteroid(currentBlast, asteroidBelt))
+//             return pointsHitting;
+//     }
     
-    return 0;
-}
+//     return pointsMiss;
+// }

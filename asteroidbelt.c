@@ -80,6 +80,9 @@ Link eraseAsteroid(AsteroidBelt *ab, Link node)
 AsteroidBelt *createAsteroidBelt()
 {
     AsteroidBelt *ab = (AsteroidBelt *)malloc(sizeof *ab);
+
+    assert(ab);
+
     ab->head = 0;
     ab->tail = 0;
     return ab;
@@ -117,7 +120,7 @@ void updateAsteroidBelt(AsteroidBelt *asteroidBelt)
     pushNewAsteroid(asteroidBelt);
 }
 
-int isBlastHitToAsteroid(Blast *blast, AsteroidBelt *asteroidBelt)
+bool isBlastHitToAsteroid(Blast *blast, AsteroidBelt *asteroidBelt)
 {
     Link current = asteroidBelt->head;
     while (current) {
@@ -139,14 +142,14 @@ int isBlastHitToAsteroid(Blast *blast, AsteroidBelt *asteroidBelt)
                 pushBackAsteroid(asteroidBelt, rightAsteroid);
             }
             eraseAsteroid(asteroidBelt, current);
-            return 1;
+            return true;
         }
         current = current->next;
     }
-    return 0;
+    return false;
 }
 
-int isAsteroidHitToSpaceship(struct Spaceship *spaceship, AsteroidBelt *asteroidBelt)
+bool isAsteroidHitToSpaceship(struct Spaceship *spaceship, AsteroidBelt *asteroidBelt)
 {
     Link current = asteroidBelt->head;
     while (current) {
@@ -161,9 +164,9 @@ int isAsteroidHitToSpaceship(struct Spaceship *spaceship, AsteroidBelt *asteroid
         int h2 = ASTEROID_HEIGHT;
 
         if (isBoundingBoxCollision(x1, y1, w1, h1, x2, y2, w2, h2))
-            return 1;
+            return true;
 
         current = current->next;
     }
-    return 0;
+    return false;
 }

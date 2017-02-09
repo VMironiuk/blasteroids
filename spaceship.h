@@ -8,7 +8,7 @@
 #define SPACESHIP_COLOR al_map_rgb(0, 255, 0)
 
 struct BlastQueue;
-struct AsteroidBelt;
+// struct AsteroidBelt;
 
 typedef struct Spaceship Spaceship;
 
@@ -30,7 +30,8 @@ void turnSpaceshipLeftOff();
 void turnSpaceshipRightOff();
 void shootSpaceshipOn();
 void shootSpaceshipOff();
-int checkSpaceshipAsteroidCollision(Spaceship *spaceship, struct AsteroidBelt *asteroidBelt);
+// int checkSpaceshipAsteroidCollision(Spaceship *spaceship, struct AsteroidBelt *asteroidBelt);
+void setSpaceshipGone(Spaceship *spaceship, bool isGone);
 bool isSpaceshipGone(Spaceship *spaceship);
 
 #endif

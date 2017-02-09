@@ -2,6 +2,7 @@
 #include "global.h"
 #include "blastqueue.h"
 #include "asteroidbelt.h"
+#include "collisions.h"
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
