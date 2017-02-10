@@ -6,21 +6,19 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct Asteroid
-{
+struct Asteroid {
     float x;
     float y;
     float heading;
     float twist;
     float speed;
-    float rotateVelocity;
+    float rotate_velocity;
     float scale;
-    bool isBroken;
+    bool is_broken;
     ALLEGRO_COLOR color;
 };
 
-void limitBoundariesForAsteroid(Asteroid *asteroid)
-{
+void limit_boundaries_for_asteroid(Asteroid *asteroid) {
     ALLEGRO_DISPLAY_MODE adm;
     al_get_display_mode(al_get_num_display_modes() - 1, &adm);
     
@@ -34,12 +32,11 @@ void limitBoundariesForAsteroid(Asteroid *asteroid)
         asteroid->x = 0;
 }
 
-Asteroid *createAsteroid(float scale)
-{
+Asteroid *create_asteroid(float scale) {
     Asteroid *asteroid = (Asteroid *)malloc(sizeof *asteroid);
-    
+
     assert(asteroid);
-    
+
     srand((unsigned)time(0));
     
     ALLEGRO_DISPLAY_MODE adm;
@@ -47,38 +44,35 @@ Asteroid *createAsteroid(float scale)
     
     asteroid->x = rand() % adm.width;
     asteroid->y = rand() % adm.height;
-    asteroid->heading = degreesToRadians(rand() % 360);
-    asteroid->twist = degreesToRadians(rand() % 360);
+    asteroid->heading = degrees_to_radians(rand() % 360);
+    asteroid->twist = degrees_to_radians(rand() % 360);
     asteroid->speed = rand() % 5 + 2;
-    asteroid->rotateVelocity = degreesToRadians(rand() % 5);
+    asteroid->rotate_velocity = degrees_to_radians(rand() % 5);
     asteroid->scale = scale;
-    asteroid->isBroken = false;
+    asteroid->is_broken = false;
     asteroid->color = al_map_rgb(255, 255, 255);
     return asteroid;
 }
 
-void breakAsteroid(Asteroid *main, Asteroid **left, Asteroid **right)
-{
-    *left = createAsteroid(2.0);
-    (*left)->heading = main->heading - degreesToRadians(20.0);
+void break_asteroid(Asteroid *main, Asteroid **left, Asteroid **right) {
+    *left = create_asteroid(2.0);
+    (*left)->heading = main->heading - degrees_to_radians(20.0);
     (*left)->x = main->x / main->scale - 50;
     (*left)->y = main->y / main->scale;
-    (*left)->isBroken = true;
+    (*left)->is_broken = true;
     
-    *right = createAsteroid(2.0);
-    (*right)->heading = main->heading + degreesToRadians(20.0);
+    *right = create_asteroid(2.0);
+    (*right)->heading = main->heading + degrees_to_radians(20.0);
     (*right)->x = main->x / main->scale + 50;
     (*right)->y = main->y / main->scale;
-    (*right)->isBroken = true;
+    (*right)->is_broken = true;
 }
 
-void destroyAsteroid(Asteroid *asteroid)
-{
+void destroy_asteroid(Asteroid *asteroid) {
     free(asteroid);
 }
 
-void drawAsteroid(Asteroid *asteroid)
-{
+void draw_asteroid(Asteroid *asteroid) {
     ALLEGRO_TRANSFORM transform;
     al_identity_transform(&transform);
     al_rotate_transform(&transform, asteroid->twist);
@@ -99,26 +93,22 @@ void drawAsteroid(Asteroid *asteroid)
     al_draw_line(0, 15, -20, 20, asteroid->color, 2.0f);
 }
 
-void updateAsteroid(Asteroid *asteroid)
-{
-    limitBoundariesForAsteroid(asteroid);
+void update_asteroid(Asteroid *asteroid) {
+    limit_boundaries_for_asteroid(asteroid);
     
-    asteroid->twist += asteroid->rotateVelocity;
+    asteroid->twist += asteroid->rotate_velocity;
     asteroid->x += cos(asteroid->heading) * asteroid->speed;
     asteroid->y += sin(asteroid->heading) * asteroid->speed;
 }
 
-float asteroidX(Asteroid *asteroid)
-{
+float asteroid_x(Asteroid *asteroid) {
     return asteroid->x;
 }
 
-float asteroidY(Asteroid *asteroid)
-{
+float asteroid_y(Asteroid *asteroid) {
     return asteroid->y;
 }
 
-bool isAsteroidBroken(Asteroid *asteroid)
-{
-    return asteroid->isBroken;
+bool is_asteroid_broken(Asteroid *asteroid) {
+    return asteroid->is_broken;
 }

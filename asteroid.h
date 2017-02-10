@@ -8,13 +8,13 @@
 
 typedef struct Asteroid Asteroid;
 
-Asteroid *createAsteroid(float scale);
-void breakAsteroid(Asteroid *main, Asteroid **left, Asteroid **right);
-void destroyAsteroid(Asteroid *asteroid);
-void drawAsteroid(Asteroid *asteroid);
-void updateAsteroid(Asteroid *asteroid);
-float asteroidX(Asteroid *asteroid);
-float asteroidY(Asteroid *asteroid);
-bool isAsteroidBroken(Asteroid *asteroid);
+Asteroid *create_asteroid(float scale);
+void break_asteroid(Asteroid *main, Asteroid **left, Asteroid **right);
+void destroy_asteroid(Asteroid *asteroid);
+void draw_asteroid(Asteroid *asteroid);
+void update_asteroid(Asteroid *asteroid);
+float asteroid_x(Asteroid *asteroid);
+float asteroid_y(Asteroid *asteroid);
+bool is_asteroid_broken(Asteroid *asteroid);
 
 #endif

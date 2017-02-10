@@ -11,8 +11,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 
-void init()
-{
+void init() {
     if (!al_init())
         error("Failed to initialize allegro");
     if (!al_init_image_addon())
@@ -26,8 +25,18 @@ void init()
         error("Failed to initialize the ttf addon");
 }
 
-int main(/*int argc, char **argv*/)
-{
+void draw_live(float x, float y) {
+    ALLEGRO_TRANSFORM transform;
+    al_identity_transform(&transform);
+    al_translate_transform(&transform, x, y);
+    al_use_transform(&transform);
+    al_draw_line(-8, 9, 0, -11, al_map_rgb(0, 255, 0), 3.0f);
+    al_draw_line(0, -11, 8, 9, al_map_rgb(0, 255, 0), 3.0f);
+    al_draw_line(-6, 4, -1, 4, al_map_rgb(0, 255, 0), 3.0f);
+    al_draw_line(6, 4, 1, 4, al_map_rgb(0, 255, 0), 3.0f);
+}
+
+int main(/*int argc, char **argv*/) {
     init();
     
     ALLEGRO_TIMER *timer = al_create_timer(1.0 / FPS);
@@ -44,30 +53,30 @@ int main(/*int argc, char **argv*/)
         error("Failed to create display");
     }
     
-    ALLEGRO_EVENT_QUEUE *eventQueue = al_create_event_queue();
-    if (!eventQueue) {
+    ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
+    if (!event_queue) {
         al_destroy_display(display);
         al_destroy_timer(timer);
         error("Failed to create event queue");
     }
     
-    al_register_event_source(eventQueue, al_get_keyboard_event_source());
-    al_register_event_source(eventQueue, al_get_timer_event_source(timer));
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
+    al_register_event_source(event_queue, al_get_timer_event_source(timer));
     
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
     al_start_timer(timer);
 
-    Spaceship *sulaco = createSpaceship();
-    BlastQueue *blastQueue = createBlastQueue();
-    AsteroidBelt *asteroidBelt = createAsteroidBelt();
+    Spaceship *sulaco = create_spaceship();
+    BlastQueue *blast_queue = create_blast_queue();
+    AsteroidBelt *asteroid_belt = create_asteroid_belt();
 
     ALLEGRO_FONT *font = al_load_font("Planetium_X_Shadowed.otf", 72, 0);
     if (!font) {
-        destroyAsteroidBelt(asteroidBelt);
-        destroyBlastQueue(blastQueue);
-        destroySpaceship(sulaco);
-        al_destroy_event_queue(eventQueue);
+        destroy_asteroid_belt(asteroid_belt);
+        destroy_blast_queue(blast_queue);
+        destroy_spaceship(sulaco);
+        al_destroy_event_queue(event_queue);
         al_destroy_display(display);
         al_destroy_timer(timer);
         error("Failed to load font");
@@ -75,32 +84,32 @@ int main(/*int argc, char **argv*/)
     
     unsigned score = 0;
     size_t lives = 3;
-    bool doExit = false;
-    while (!doExit) {
-        if (isSpaceshipGone(sulaco)) {
-            destroySpaceship(sulaco);
-            sulaco = createSpaceship();
+    bool do_exit = false;
+    while (!do_exit) {
+        if (is_spaceship_gone(sulaco)) {
+            destroy_spaceship(sulaco);
+            sulaco = create_spaceship();
         }
 
 
         ALLEGRO_EVENT event;
-        al_wait_for_event(eventQueue, &event);
+        al_wait_for_event(event_queue, &event);
         
         if (event.type == ALLEGRO_EVENT_TIMER) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            updateSpaceship(sulaco);
-            updateSpaceshipsBlaster(sulaco, blastQueue);
-            drawSpaceship(sulaco);
+            update_spaceship(sulaco);
+            update_spaceship_blaster(sulaco, blast_queue);
+            draw_spaceship(sulaco);
             
-            updateBlastQueue(blastQueue);
-            drawBlastQueue(blastQueue);
+            update_blast_queue(blast_queue);
+            draw_blast_queue(blast_queue);
             
-            updateAsteroidBelt(asteroidBelt);
-            drawAsteroidBelt(asteroidBelt);
+            update_asteroid_belt(asteroid_belt);
+            draw_asteroid_belt(asteroid_belt);
 
-            score += checkBlastAsteroidCollision(blastQueue, asteroidBelt);
-            lives -= checkSpaceshipAsteroidCollision(sulaco, asteroidBelt);
+            score += check_blast_asteroid_collision(blast_queue, asteroid_belt);
+            lives -= check_spaceship_asteroid_collision(sulaco, asteroid_belt);
 
             ALLEGRO_TRANSFORM transform;
             al_identity_transform(&transform);
@@ -114,7 +123,7 @@ int main(/*int argc, char **argv*/)
             float x = 25.0;
             const float y = 110.0;
             for (i = 0; i < lives; ++i, x += 40.0)
-                drawLive(x, y);
+                draw_live(x, y);
 
             al_flip_display();
         }
@@ -125,22 +134,22 @@ int main(/*int argc, char **argv*/)
         if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
             switch (event.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
-                doExit = true;
+                do_exit = true;
                 break;
             case ALLEGRO_KEY_UP:
-                moveSpaceshipForwardOn();
+                move_spaceship_forward_on();
                 break;
             case ALLEGRO_KEY_DOWN:
-                moveSpaceshipBackwardOn();
+                move_spaceship_backward_on();
                 break;
             case ALLEGRO_KEY_LEFT:
-                turnSpaceshipLeftOn();
+                turn_spaceship_left_on();
                 break;
             case ALLEGRO_KEY_RIGHT:
-                turnSpaceshipRightOn();
+                turn_spaceship_right_on();
                 break;
             case ALLEGRO_KEY_SPACE:
-                shootSpaceshipOn();
+                shoot_spaceship_on();
                 break;
             default:
                 break;
@@ -150,19 +159,19 @@ int main(/*int argc, char **argv*/)
         if (event.type == ALLEGRO_EVENT_KEY_UP) {
             switch (event.keyboard.keycode) {
             case ALLEGRO_KEY_UP:
-                moveSpaceshipForwardOff();
+                move_spaceship_forward_off();
                 break;
             case ALLEGRO_KEY_DOWN:
-                moveSpaceshipBackwardOff();
+                move_spaceship_backward_off();
                 break;
             case ALLEGRO_KEY_LEFT:
-                turnSpaceshipLeftOff();
+                turn_spaceship_left_off();
                 break;
             case ALLEGRO_KEY_RIGHT:
-                turnSpaceshipRightOff();
+                turn_spaceship_right_off();
                 break;
             case ALLEGRO_KEY_SPACE:
-                shootSpaceshipOff();
+                shoot_spaceship_off();
                 break;
             default:
                 break;
@@ -171,10 +180,10 @@ int main(/*int argc, char **argv*/)
     }
 
     al_destroy_font(font);
-    destroyAsteroidBelt(asteroidBelt);
-    destroyBlastQueue(blastQueue);
-    destroySpaceship(sulaco);
-    al_destroy_event_queue(eventQueue);
+    destroy_asteroid_belt(asteroid_belt);
+    destroy_blast_queue(blast_queue);
+    destroy_spaceship(sulaco);
+    al_destroy_event_queue(event_queue);
     al_destroy_display(display);
     al_destroy_timer(timer);
     

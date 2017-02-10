@@ -8,30 +8,28 @@
 #define SPACESHIP_COLOR al_map_rgb(0, 255, 0)
 
 struct BlastQueue;
-// struct AsteroidBelt;
 
 typedef struct Spaceship Spaceship;
 
-Spaceship *createSpaceship();
-void destroySpaceship(Spaceship *spaceship);
-void drawSpaceship(Spaceship *spaceship);
-void updateSpaceship(Spaceship *spaceship);
-void updateSpaceshipsBlaster(Spaceship *spaceship, struct BlastQueue *queue);
-float spaceshipX(const Spaceship *spaceship);
-float spaceshipY(const Spaceship *spaceship);
-float spaceshipHeading(const Spaceship *spaceship);
-void moveSpaceshipForwardOn();
-void moveSpaceshipBackwardOn();
-void turnSpaceshipLeftOn();
-void turnSpaceshipRightOn();
-void moveSpaceshipForwardOff();
-void moveSpaceshipBackwardOff();
-void turnSpaceshipLeftOff();
-void turnSpaceshipRightOff();
-void shootSpaceshipOn();
-void shootSpaceshipOff();
-// int checkSpaceshipAsteroidCollision(Spaceship *spaceship, struct AsteroidBelt *asteroidBelt);
-void setSpaceshipGone(Spaceship *spaceship, bool isGone);
-bool isSpaceshipGone(Spaceship *spaceship);
+Spaceship *create_spaceship();
+void destroy_spaceship(Spaceship *spaceship);
+void draw_spaceship(Spaceship *spaceship);
+void update_spaceship(Spaceship *spaceship);
+void update_spaceship_blaster(Spaceship *spaceship, struct BlastQueue *queue);
+float spaceship_x(const Spaceship *spaceship);
+float spaceship_y(const Spaceship *spaceship);
+float spaceship_heading(const Spaceship *spaceship);
+void move_spaceship_forward_on();
+void move_spaceship_backward_on();
+void turn_spaceship_left_on();
+void turn_spaceship_right_on();
+void move_spaceship_forward_off();
+void move_spaceship_backward_off();
+void turn_spaceship_left_off();
+void turn_spaceship_right_off();
+void shoot_spaceship_on();
+void shoot_spaceship_off();
+void set_spaceship_gone(Spaceship *spaceship, bool is_gone);
+bool is_spaceship_gone(Spaceship *spaceship);
 
 #endif

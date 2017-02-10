@@ -9,12 +9,11 @@ struct Spaceship;
 
 typedef struct AsteroidBelt AsteroidBelt;
 
-AsteroidBelt *createAsteroidBelt();
-void destroyAsteroidBelt(AsteroidBelt *asteroidBelt);
-void drawAsteroidBelt(AsteroidBelt *asteroidBelt);
-void updateAsteroidBelt(AsteroidBelt *asteroidBelt);
-// TODO: move to collisions.h
-bool isBlastHitToAsteroid(struct Blast *blast, AsteroidBelt *asteroidBelt);
-bool isAsteroidHitToSpaceship(struct Spaceship *spaceship, AsteroidBelt *asteroidBelt);
+AsteroidBelt *create_asteroid_belt();
+void destroy_asteroid_belt(AsteroidBelt *asteroid_belt);
+void draw_asteroid_belt(AsteroidBelt *asteroid_belt);
+void update_asteroid_belt(AsteroidBelt *asteroid_belt);
+bool is_blast_hit_to_asteroid(AsteroidBelt *asteroid_belt, struct Blast *blast);
+bool is_asteroid_hit_to_spaceship(AsteroidBelt *asteroid_belt, struct Spaceship *spaceship);
 
 #endif

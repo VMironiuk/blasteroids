@@ -3,6 +3,7 @@
 #include "blast.h"
 #include "global.h"
 #include "spaceship.h"
+#include "collisions.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -11,52 +12,47 @@
 
 typedef struct Node Node;
 
-struct Node
-{
+struct Node {
     Asteroid *asteroid;
     Node *previous;
     Node *next;
 };
 typedef Node *Link;
 
-struct AsteroidBelt
-{
+struct AsteroidBelt {
     Link head;
     Link tail;
 };
 
-void pushBackAsteroid(AsteroidBelt *asteroidBelt, Asteroid *asteroid)
-{
+void push_back_asteroid(AsteroidBelt *asteroid_belt, Asteroid *asteroid) {
     Link temp = (Node *)malloc(sizeof *temp);
     temp->asteroid = asteroid;
     temp->previous = 0;
     temp->next = 0;
     
-    if (!asteroidBelt->tail) {
-        asteroidBelt->head = temp;
-        asteroidBelt->tail = temp;
+    if (!asteroid_belt->tail) {
+        asteroid_belt->head = temp;
+        asteroid_belt->tail = temp;
     } else {
-        asteroidBelt->tail->next = temp;
-        temp->previous = asteroidBelt->tail;
-        asteroidBelt->tail = temp;
+        asteroid_belt->tail->next = temp;
+        temp->previous = asteroid_belt->tail;
+        asteroid_belt->tail = temp;
     }
 }
 
-void pushNewAsteroid(AsteroidBelt *asteroidBelt)
-{
-    static float oldTime = 0.0;
+void push_new_asteroid(AsteroidBelt *asteroid_belt) {
+    static float old_time = 0.0;
     
     // create and push back new asteroids every 5 seconds
-    float currentTime = al_current_time();
-    if (currentTime - oldTime > ASTEROID_CREATING_INTERVAL) {
-        oldTime = currentTime;
+    float current_time = al_current_time();
+    if (current_time - old_time > ASTEROID_CREATING_INTERVAL) {
+        old_time = current_time;
         Link temp = (Node *)malloc(sizeof *temp);
-        pushBackAsteroid(asteroidBelt, createAsteroid(1.0));
+        push_back_asteroid(asteroid_belt, create_asteroid(1.0));
     }
 }
 
-Link eraseAsteroid(AsteroidBelt *ab, Link node)
-{
+Link erase_asteroid(AsteroidBelt *ab, Link node) {
     Link result = node->next;
     
     if (node->next)
@@ -71,14 +67,13 @@ Link eraseAsteroid(AsteroidBelt *ab, Link node)
     if (node == ab->tail)
         ab->tail = ab->tail->previous;
     
-    destroyAsteroid(node->asteroid);
+    destroy_asteroid(node->asteroid);
     free(node);
     
     return result;
 }
 
-AsteroidBelt *createAsteroidBelt()
-{
+AsteroidBelt *create_asteroid_belt() {
     AsteroidBelt *ab = (AsteroidBelt *)malloc(sizeof *ab);
 
     assert(ab);
@@ -88,60 +83,56 @@ AsteroidBelt *createAsteroidBelt()
     return ab;
 }
 
-void destroyAsteroidBelt(AsteroidBelt *asteroidBelt)
-{
-    while (asteroidBelt->head) {
-        Link temp = asteroidBelt->head->next;
-        destroyAsteroid(asteroidBelt->head->asteroid);
-        free(asteroidBelt->head);
-        asteroidBelt->head = temp;
+void destroy_asteroid_belt(AsteroidBelt *asteroid_belt) {
+    while (asteroid_belt->head) {
+        Link temp = asteroid_belt->head->next;
+        destroy_asteroid(asteroid_belt->head->asteroid);
+        free(asteroid_belt->head);
+        asteroid_belt->head = temp;
     }
 
-    free(asteroidBelt);
+    free(asteroid_belt);
 }
 
-void drawAsteroidBelt(AsteroidBelt *asteroidBelt)
-{
-    Link current = asteroidBelt->head;
+void draw_asteroid_belt(AsteroidBelt *asteroid_belt) {
+    Link current = asteroid_belt->head;
     while (current) {
-        drawAsteroid(current->asteroid);
+        draw_asteroid(current->asteroid);
         current = current->next;
     }
 }
 
-void updateAsteroidBelt(AsteroidBelt *asteroidBelt)
-{
-    Link current = asteroidBelt->head;
+void update_asteroid_belt(AsteroidBelt *asteroid_belt) {
+    Link current = asteroid_belt->head;
     while (current) {
-        updateAsteroid(current->asteroid);
+        update_asteroid(current->asteroid);
         current = current->next;
     }
     
-    pushNewAsteroid(asteroidBelt);
+    push_new_asteroid(asteroid_belt);
 }
 
-bool isBlastHitToAsteroid(Blast *blast, AsteroidBelt *asteroidBelt)
-{
-    Link current = asteroidBelt->head;
+bool is_blast_hit_to_asteroid(AsteroidBelt *asteroid_belt, Blast *blast) {
+    Link current = asteroid_belt->head;
     while (current) {
         Asteroid *asteroid = current->asteroid;
-        int x1 = blastX(blast) - BLAST_WIDTH / 2;
-        int y1 = blastY(blast) - BLAST_HEIGHT / 2;
+        int x1 = blast_x(blast) - BLAST_WIDTH / 2;
+        int y1 = blast_y(blast) - BLAST_HEIGHT / 2;
         int w1 = BLAST_WIDTH;
         int h1 = BLAST_HEIGHT;
-        int x2 = asteroidX(asteroid) - ASTEROID_WIDTH / 2;
-        int y2 = asteroidY(asteroid) - ASTEROID_HEIGHT / 2;
+        int x2 = asteroid_x(asteroid) - ASTEROID_WIDTH / 2;
+        int y2 = asteroid_y(asteroid) - ASTEROID_HEIGHT / 2;
         int w2 = ASTEROID_WIDTH;
         int h2 = ASTEROID_HEIGHT;
-        if (isBoundingBoxCollision(x1, y1, w1, h1, x2, y2, w2, h2)) {
-            if (!isAsteroidBroken(asteroid)) {
-                Asteroid *leftAsteroid = 0;
-                Asteroid *rightAsteroid = 0;
-                breakAsteroid(asteroid, &leftAsteroid, &rightAsteroid);
-                pushBackAsteroid(asteroidBelt, leftAsteroid);
-                pushBackAsteroid(asteroidBelt, rightAsteroid);
+        if (is_bounding_box_collision(x1, y1, w1, h1, x2, y2, w2, h2)) {
+            if (!is_asteroid_broken(asteroid)) {
+                Asteroid *left = 0;
+                Asteroid *right = 0;
+                break_asteroid(asteroid, &left, &right);
+                push_back_asteroid(asteroid_belt, left);
+                push_back_asteroid(asteroid_belt, right);
             }
-            eraseAsteroid(asteroidBelt, current);
+            erase_asteroid(asteroid_belt, current);
             return true;
         }
         current = current->next;
@@ -149,21 +140,20 @@ bool isBlastHitToAsteroid(Blast *blast, AsteroidBelt *asteroidBelt)
     return false;
 }
 
-bool isAsteroidHitToSpaceship(struct Spaceship *spaceship, AsteroidBelt *asteroidBelt)
-{
-    Link current = asteroidBelt->head;
+bool is_asteroid_hit_to_spaceship(AsteroidBelt *asteroid_belt, struct Spaceship *spaceship) {
+    Link current = asteroid_belt->head;
     while (current) {
         Asteroid *asteroid = current->asteroid;
-        int x1 = spaceshipX(spaceship) - SPACESHIP_WIDTH / 2;
-        int y1 = spaceshipY(spaceship) - SPACESHIP_HEIGHT / 2;
+        int x1 = spaceship_x(spaceship) - SPACESHIP_WIDTH / 2;
+        int y1 = spaceship_y(spaceship) - SPACESHIP_HEIGHT / 2;
         int w1 = SPACESHIP_WIDTH;
         int h1 = SPACESHIP_HEIGHT;
-        int x2 = asteroidX(asteroid) - ASTEROID_WIDTH / 2;
-        int y2 = asteroidY(asteroid) - ASTEROID_HEIGHT / 2;
+        int x2 = asteroid_x(asteroid) - ASTEROID_WIDTH / 2;
+        int y2 = asteroid_y(asteroid) - ASTEROID_HEIGHT / 2;
         int w2 = ASTEROID_WIDTH;
         int h2 = ASTEROID_HEIGHT;
 
-        if (isBoundingBoxCollision(x1, y1, w1, h1, x2, y2, w2, h2))
+        if (is_bounding_box_collision(x1, y1, w1, h1, x2, y2, w2, h2))
             return true;
 
         current = current->next;

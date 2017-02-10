@@ -10,11 +10,11 @@ struct Spaceship;
 
 typedef struct Blast Blast;
 
-Blast *createBlast(const struct Spaceship *spaceship);
-void destroyBlast(Blast *blast);
-void drawBlast(Blast *blast);
-void updateBlast(Blast *blast);
-float blastX(Blast *blast);
-float blastY(Blast *blast);
+Blast *create_blast(const struct Spaceship *spaceship);
+void destroy_blast(Blast *blast);
+void draw_blast(Blast *blast);
+void update_blast(Blast *blast);
+float blast_x(Blast *blast);
+float blast_y(Blast *blast);
 
 #endif

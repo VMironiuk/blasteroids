@@ -4,18 +4,16 @@
 #include <stdbool.h>
 
 struct Blast;
-// struct AsteroidBelt;
 
 typedef struct BlastQueue BlastQueue;
 
-BlastQueue *createBlastQueue();
-void destroyBlastQueue(BlastQueue *queue);
-void drawBlastQueue(BlastQueue *queue);
-void updateBlastQueue(BlastQueue *queue);
-void pushBlast(BlastQueue *queue, struct Blast *blast);
-void popBlast(BlastQueue *queue);
-bool blastQueueHasNext(BlastQueue *queue);
-struct Blast *blastQueueNext(BlastQueue *queue);
-// int checkBlastAsteroidCollision(BlastQueue *blastQueue, struct AsteroidBelt *asteroidBelt);
+BlastQueue *create_blast_queue();
+void destroy_blast_queue(BlastQueue *queue);
+void draw_blast_queue(BlastQueue *queue);
+void update_blast_queue(BlastQueue *queue);
+void push_blast(BlastQueue *queue, struct Blast *blast);
+void pop_blast(BlastQueue *queue);
+bool blast_queue_has_next(BlastQueue *queue);
+struct Blast *blast_queue_next(BlastQueue *queue);
 
 #endif
